@@ -11,3 +11,96 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+// 1. Roles Definition
+enum Role {
+  CANDIDATE
+  EMPLOYER
+}
+
+enum Experience{
+  Experienced
+  Intermediate
+  Begginer
+}
+
+enum JobType{
+  Fulltime
+  Internship
+  Freelance
+}
+
+enum Category{
+  Software
+  Design
+  Sales
+  Marketing
+  Finance
+}
+
+model User {
+  id          String   @id @default(uuid())
+  email       String   @unique
+  password    String
+  firstName   String
+  lastName    String
+  role        Role     @default(CANDIDATE) // Distinguishes Employer vs Candidate
+  createdAt   DateTime @default(now())
+  
+  // Relations
+  profile     Profile?      // Only populated for CANDIDATES
+  jobsPosted  JobPosting[]  // Only populated for EMPLOYERS
+  applications Application[] @relation("UserToApplication")
+}
+
+model Profile {
+  id           String   @id @default(uuid())
+  userId       String   @unique
+  user         User     @relation(fields: [userId], references: [id])
+  
+  // Saved/Default data for the user
+  defaultResumePath String?
+  bio               String?
+  skills            String[]
+}
+
+model JobPosting {
+  id          String   @id @default(uuid())
+  title       String
+  description String   @db.Text
+  companyName String
+  location    String
+  jobType     JobType
+  experience  Experience
+  category    Category
+  isActive    Boolean  @default(false)
+  salary      Int?
+  
+  // The Employer who posted it
+  employerId  String
+  employer    User     @relation(fields: [employerId], references: [id])
+  
+  // Applications received for this job
+  applications Application[]
+  createdAt   DateTime @default(now())
+}
+
+model Application {
+  id          String   @id @default(uuid())
+  
+  // Linking the Application to the Job and the User
+  jobId       String
+  job         JobPosting @relation(fields: [jobId], references: [id])
+  
+  candidateId String
+  candidate   User       @relation(fields: [candidateId], references: [id], name: "UserToApplication")
+
+  // The "snapshot" of the profile details at the time of application
+  coverLetter String   @db.Text
+  resumePath  String   // The specific resume used for THIS application
+  status      String   @default("PENDING") // PENDING, REVIEWING, ACCEPTED, REJECTED
+  
+  appliedAt   DateTime @default(now())
+
+  @@unique([jobId, candidateId]) // Ensures a user applies only once per job
+}
