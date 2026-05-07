@@ -1,4 +1,4 @@
-
+export type toggeler = "login"|"register"
 export type Role = "CANDIDATE" | "EMPLOYER"
 
 export type User= {
