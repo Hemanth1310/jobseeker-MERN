@@ -14,14 +14,14 @@ const Modal = ({isOpen,title,children,onClose}: Props) => {
     }
     const modalRoot  = document.getElementById("modalRoot")!
     const modalContent = (
-        <div className='absolute inset-0 w-screen h-screen bg-gray-500/50 flex items-center justify-center'>
-            <div className='w-1/3 h-1/3 bg-white p-10'>
-                <div>
-                    <h1>{title}</h1>
+        <div className='fixed inset-0 w-screen h-screen bg-gray-500/50 flex items-center justify-center z-100 font-mono'>
+            <div className='bg-mist-50 min-w-1/3 min-h-1/3  p-5 rounded-lg'>
+                <div className='flex items-center justify-between pb-3'>
+                    <h1 className='text-2xl'>{title}</h1>
                     <button onClick={onClose}>X</button>
                 </div>
                 
-                <div className='h-1 w-full bg-mist-400'></div>
+                <div className='h-0.5 w-full bg-mist-200'></div>
                 <div>
                     {children}
                 </div>
