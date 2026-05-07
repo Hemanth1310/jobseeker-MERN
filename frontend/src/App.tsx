@@ -4,6 +4,7 @@ import { Routes, Route } from 'react-router-dom'
 import './App.css'
 import HeaderLayout from './components/layouts/HeaderLayout'
 import Home from './views/Home'
+import { ToastContainer } from 'react-toastify'
 
 function App() {
 
@@ -19,7 +20,7 @@ function App() {
             </Routes>
           </div> 
         </div>
-      
+      <ToastContainer/>
     </div>
   )
 }
