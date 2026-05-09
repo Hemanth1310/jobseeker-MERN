@@ -49,12 +49,12 @@ const Login = ({toggleTo, onClose}: Props) => {
                     progress: undefined,
                     theme: "light",
             })
-            updateUserData(response.data as User)
-            onClose()
+            updateUserData(response.data.payload as User)
             navigate('/')
+            onClose()
         }catch(err){
             if(err instanceof AxiosError){
-                setErrors(prev=>({...prev, apiResponse:err.message}))
+                setErrors(prev=>({...prev, apiResponse:err.response?.data.error}))
                 return
             }
             setErrors(prev=>({...prev, apiResponse:'Unexpected error occured.'}))
