@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import type { User } from "../types";
 type AuthContextType = {
     userData: User | null,
@@ -14,6 +14,12 @@ const defaultContext = {
     logout:()=>{}
 }
 
+const BASE_API_URL = import.meta.env.VITE_API_URL
+const hasAuthCookie = () =>
+    document.cookie
+        .split(';')
+        .some((cookie) => cookie.trim().startsWith('hasAuth='))
+
 // eslint-disable-next-line react-refresh/only-export-components
 export const AuthContext = createContext<AuthContextType>(defaultContext)
 
@@ -24,16 +30,17 @@ const AuthContextProvider = ({children}:{children:React.ReactNode}) =>{
     const [isLoading, setIsLoading] = useState(true)
 
     const updateUserData =(data:User) =>{
-        setIsLoading(true)
+        console.log(data)
         setUserData(data)
         setIsLoading(false)
+        console.log(data)
     }
 
     const logout = () =>{
-        setIsLoading(true)
         setUserData(null)
         setIsLoading(false)
     }
+    useEffect(()=>{console.log(userData)},[userData])
     return(
         <AuthContext.Provider value={{userData, isLoading, updateUserData, logout}}>
             {children}
