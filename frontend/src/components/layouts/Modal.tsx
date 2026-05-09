@@ -10,7 +10,7 @@ type Props = {
 
 const Modal = ({isOpen,title,children,onClose}: Props) => {
     if(!isOpen){
-        return
+        return null
     }
     const modalRoot  = document.getElementById("modalRoot")!
     const modalContent = (
