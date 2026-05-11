@@ -41,8 +41,7 @@ const Register = ({onClose,toggleTo}: Props) => {
 
     const handleRegistration = async()=>{
         setIsPending(true)
-        const registrationDetails = Object.fromEntries(Object.entries(formData))
-        const parsedDetails = registerSchema.safeParse(registrationDetails)
+        const parsedDetails = registerSchema.safeParse(formData)
         if(!parsedDetails.success){
             for(const issue of parsedDetails.error.issues){
                 setErrors(prev=>({...prev,[issue.path[0]]:issue.message}))  
@@ -50,7 +49,7 @@ const Register = ({onClose,toggleTo}: Props) => {
             setIsPending(false)
              return
         }
-        if(parsedDetails.data.password !== registrationDetails.repassword){
+        if(parsedDetails.data.password !== formData.repassword){
             setErrors(prev=>({...prev,password:"Passwords dont match."}))
             setIsPending(false)
             return
