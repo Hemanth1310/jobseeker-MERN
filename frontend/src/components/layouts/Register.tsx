@@ -129,7 +129,7 @@ const Register = ({onClose,toggleTo}: Props) => {
         {errors.apiResponse && <p className='text-xs text-red-500'>Registration Failed: {errors.apiResponse}</p>}
         <button type='submit' disabled={isPendeing} className='w-full h-10 p-1 bg-brand-primary rounded-lg text-white'>{isPendeing?"Loading":"Register"}</button>
         
-        <p>Not registered ? <span className='text-blue-500' onClick={()=>toggleTo('register')}>Register Here</span></p>
+        <p>Already a user ? <span className='text-blue-500' onClick={()=>toggleTo('login')}>Login Here</span></p>
     </form>
   )
 }
