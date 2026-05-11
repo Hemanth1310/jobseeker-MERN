@@ -4,6 +4,7 @@ import AuthRouter from './authRoutes.js'
 import ProtectedRoutes from './protectedRoutes.js'
 import cors from 'cors'
 import authenticationToken from "./utils/authMiddleware.js";
+import cookieParser from "cookie-parser";
 const app = express()
 
 app.use((req, res, next) => {
@@ -20,6 +21,7 @@ app.use(
 );
 
 app.use(express.json())
+app.use(cookieParser())
 app.use('/api/auth',AuthRouter)
 app.use('/api/private',authenticationToken,ProtectedRoutes)
 
