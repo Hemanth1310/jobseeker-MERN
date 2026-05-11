@@ -1,7 +1,9 @@
 
 import express from "express"
 import AuthRouter from './authRoutes.js'
+import ProtectedRoutes from './protectedRoutes.js'
 import cors from 'cors'
+import authenticationToken from "./utils/authMiddleware.js";
 const app = express()
 
 app.use((req, res, next) => {
@@ -19,6 +21,7 @@ app.use(
 
 app.use(express.json())
 app.use('/api/auth',AuthRouter)
+app.use('/api/private',authenticationToken,ProtectedRoutes)
 
 app.listen(3003,()=>{
     console.log("listening at 3003")
