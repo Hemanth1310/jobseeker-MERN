@@ -1,5 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import type { User } from "../types";
+import axios from '../utils/authMiddleware'
+import { AxiosError } from "axios";
 type AuthContextType = {
     userData: User | null,
     isLoading:boolean,
@@ -40,7 +42,35 @@ const AuthContextProvider = ({children}:{children:React.ReactNode}) =>{
         setUserData(null)
         setIsLoading(false)
     }
-    useEffect(()=>{console.log(userData)},[userData])
+    useEffect(()=>{
+        if(!hasAuthCookie()){
+            setIsLoading(false)
+            return
+        }
+
+        const tokenValidator = async()=>{
+
+            try{
+                const {data} = await axios.get(`${BASE_API_URL}/api/private/user-details`)
+
+                if(data?.payload){
+                   updateUserData(data?.payload)
+                }else{
+                    setIsLoading(false)
+                }
+                
+            }catch(err){
+                if(err instanceof AxiosError){
+                    console.log(err.response?.data?.error)
+                }else{
+                    console.log("Unexpected Error occured")
+                }
+                setIsLoading(false)
+            }
+        }
+        tokenValidator()
+
+    },[])
     return(
         <AuthContext.Provider value={{userData, isLoading, updateUserData, logout}}>
             {children}
