@@ -55,7 +55,6 @@ const Register = ({onClose,toggleTo}: Props) => {
             return
         }
 
-        console.log(formData)
         try{
             await axios.post(`${BASE_API_URL}/api/auth/register`, parsedDetails.data)
 
