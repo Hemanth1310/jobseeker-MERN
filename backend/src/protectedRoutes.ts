@@ -31,4 +31,11 @@ router.get('/user-details',async(req,res)=>{
     }
 })
 
+router.get('/logout',(req,res)=>{
+    res.clearCookie('token')
+    res.clearCookie('hasAuth')
+
+    res.status(200).json({message:"Successfully Logged out"})
+})
+
 export default router
