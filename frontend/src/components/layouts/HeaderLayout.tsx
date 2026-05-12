@@ -1,12 +1,36 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Logo from '../ui/Logo'
 import { useAuthContextData } from '../../utils/useAuthContextData'
 import AuthLayout from './AuthLayout'
+import { ChevronDown, ChevronUp, CircleUserRound, LogOut } from 'lucide-react'
+import axios from '../../utils/authMiddleware'
 
+const BASE_API_URL = import.meta.env.VITE_API_URL
 
 const HeaderLayout = () => {
-  const {userData} = useAuthContextData()
+  const {userData, logout} = useAuthContextData()
   const [isOpen, setIsOpen] = useState(false)
+  const [isDropDownOpen, setIsDropDownOpen] = useState(false)
+  const dropDownRef = useRef<HTMLDivElement>(null)
+  const handleLogout=async()=>{
+      try{
+        await axios.get(`${BASE_API_URL}/api/private/logout`)
+      }catch(err){
+        console.log(err)
+      }
+    logout()
+  }
+
+  useEffect(()=>{
+    const handleOutsideClick=(e:MouseEvent)=>{
+      if(dropDownRef.current && !dropDownRef.current.contains(e.target as Node)){
+        setIsDropDownOpen(false)
+      }
+    }
+    document.addEventListener('mousedown',handleOutsideClick)
+    
+    return ()=>document.removeEventListener('mousedown',handleOutsideClick)
+  },[])
   return (
     <div className='w-full  h-16 flex items-center justify-between pr-5 pl-5 font-mono'>
         <div className='h-8 flex gap-2 items-center'>
@@ -18,7 +42,24 @@ const HeaderLayout = () => {
         <div>
           {userData?
             <div>
+                {userData.role==='EMPLOYER'?
+                <div>
 
+                </div>:<div>
+                  
+                  </div>}
+                  <div ref={dropDownRef} className='relative flex items-center' onClick={(e)=>{e.stopPropagation();setIsDropDownOpen(prev=>!prev)}}>
+                    <CircleUserRound size={28}/>
+                    {isDropDownOpen?<ChevronUp size={18}/>:<ChevronDown size={18}/>}
+                    {isDropDownOpen && <div className='absolute top-8 right-0 bg-mist-50 shadow-md border border-mist-200 p-5 rounded-lg flex flex-col'>
+                       <button className='flex items-center text-red-500 hover:border-b-2 hover:border-b-brand-primary' onClick={handleLogout}>
+                          <LogOut />
+                          Logout
+                        </button>
+                    </div>}
+                  </div>
+                  
+                  {/* */}
             </div>: <div>
                  <div>
               <button className='hover:border-b-2 hover:border-b-brand-primary' onClick={()=>setIsOpen(true)}>Login</button>
