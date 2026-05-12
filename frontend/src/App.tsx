@@ -5,6 +5,11 @@ import './App.css'
 import HeaderLayout from './components/layouts/HeaderLayout'
 import Home from './views/Home'
 import { ToastContainer } from 'react-toastify'
+import CandidateDashboard from './views/CandidateDashboard'
+import EmployerDashboard from './views/EmployerDashboard'
+import EmployerProtectedRoutes from './utils/EmployerProtectedRoutes'
+import CandidateProtectedRoutes from './utils/CandidateProtectedRoutes'
+import MakeAPost from './views/MakeAPost'
 
 function App() {
 
@@ -16,6 +21,13 @@ function App() {
           <div className="min-h-full w-full rounded-2xl p-5 box-border">
             <Routes>
               <Route path="/" element={<Home/>}></Route>
+              <Route element={<EmployerProtectedRoutes/>}>
+                  <Route path='/admin/dashboard' element={<EmployerDashboard/>}/>
+                  <Route path='/admin/make-a-post' element={<MakeAPost/>}/>
+              </Route>
+               <Route element={<CandidateProtectedRoutes/>}>
+                  <Route path='/dashboard' element={<CandidateDashboard/>}/>
+              </Route>
              
             </Routes>
           </div> 
