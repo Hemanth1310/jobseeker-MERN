@@ -29,7 +29,7 @@ export const AuthContext = createContext<AuthContextType>(defaultContext)
 const AuthContextProvider = ({children}:{children:React.ReactNode}) =>{
 
     const [userData, setUserData] = useState<User|null>(null)
-    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(()=>hasAuthCookie())
 
     const updateUserData =(data:User) =>{
         console.log(data)
@@ -44,7 +44,6 @@ const AuthContextProvider = ({children}:{children:React.ReactNode}) =>{
     }
     useEffect(()=>{
         if(!hasAuthCookie()){
-            setIsLoading(false)
             return
         }
 
