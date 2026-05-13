@@ -1,7 +1,14 @@
 import z from 'zod'
 
+export const jobType= ["Fulltime" , "Internship" , "Freelance"] as const
+export const experience=[ "Experienced" , "Intermediate" , "Begginer"] as const
+export const category= ["Software" , "Design" , "Sales" , "Marketing" , "Finance"] as const
+
 export const ROLE_VALUES = ['CANDIDATE', 'EMPLOYER'] as const
 export const roleSchema = z.enum(ROLE_VALUES)
+const jobTypeSchema = z.enum(jobType)
+const experienceSchema = z.enum(experience)
+const categorySchema = z.enum(category)
 
 const emailRules = z.string().email("Invalid email format").trim().toLowerCase()
 
@@ -22,4 +29,23 @@ export const registerSchema = z.object({
 export const loginSchema = z.object({
     email: emailRules,
     password: passwordRules
+})
+
+export const jobPostingSchema = z.object({
+    title: z.string().min(1,'Title cannot be empty'),
+    description: z.string().min(1,'Description cannot be empty'),
+    companyName: z.string().min(1,'CompanyName cannot be empty'),
+    location: z.string().min(1,'Location cannot be empty'),
+    jobType: jobTypeSchema,
+    experience: experienceSchema,
+    category: categorySchema,
+    salary:  z.preprocess(
+            (value) => {
+                if (value === '' || value === null || value === undefined) {
+                    return null
+                }
+                return Number(value)
+            },
+            z.number().int().nonnegative().nullable()
+        ).default(null),
 })
