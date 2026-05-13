@@ -1,8 +1,11 @@
 import z from 'zod'
-import { Role, } from '../../generated/prisma/enums.js';
+import { Role,JobType,Experience,Category  } from '../../generated/prisma/enums.js';
 
 
 const roleSchema = z.enum(Role)
+const jobTypeSchema = z.enum(JobType)
+const experienceSchema = z.enum(Experience)
+const categorySchema = z.enum(Category)
 const emailRules = z.string().email("Invalid email format").trim().toLowerCase()
 
 // Define password rules ONCE so they are identical everywhere
@@ -24,3 +27,13 @@ export const loginSchema = z.object({
     password: passwordRules
 })
 
+export const jobPostingSchema = z.object({
+    title: z.string().min(1,'Title cannot be empty'),
+    description: z.string().min(1,'Description cannot be empty'),
+    companyName: z.string().min(1,'CompanyName cannot be empty'),
+    location: z.string().min(1,'Location cannot be empty'),
+    jobType: jobTypeSchema,
+    experience: experienceSchema,
+    category: categorySchema,
+    salary: z.number().int().nonnegative().nullable().optional().default(null),
+})
