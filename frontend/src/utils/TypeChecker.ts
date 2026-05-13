@@ -6,10 +6,17 @@ export const category= ["Software" , "Design" , "Sales" , "Marketing" , "Finance
 
 export const ROLE_VALUES = ['CANDIDATE', 'EMPLOYER'] as const
 export const roleSchema = z.enum(ROLE_VALUES)
-const jobTypeSchema = z.enum(jobType)
-const experienceSchema = z.enum(experience)
-const categorySchema = z.enum(category)
+const jobTypeSchema = z.enum(jobType, {
+    message: "Please select at least one option"
+});
 
+const experienceSchema = z.enum(experience, {
+    message: "Please select at least one option"
+});
+
+const categorySchema = z.enum(category, {
+    message: "Please select at least one option"
+});
 const emailRules = z.string().email("Invalid email format").trim().toLowerCase()
 
 // Define password rules ONCE so they are identical everywhere
@@ -49,3 +56,5 @@ export const jobPostingSchema = z.object({
             z.number().int().nonnegative().nullable()
         ).default(null),
 })
+
+export type jobDataType = z.infer<typeof jobPostingSchema>
