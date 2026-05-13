@@ -4,6 +4,7 @@ import { useAuthContextData } from '../../utils/useAuthContextData'
 import AuthLayout from './AuthLayout'
 import { ChevronDown, ChevronUp, CircleUserRound, LogOut } from 'lucide-react'
 import axios from '../../utils/authMiddleware'
+import { NavLink } from 'react-router'
 
 const BASE_API_URL = import.meta.env.VITE_API_URL
 
@@ -41,12 +42,23 @@ const HeaderLayout = () => {
         </div>
         <div>
           {userData?
-            <div>
+            <div className='flex gap-5 items-center'>
                 {userData.role==='EMPLOYER'?
                 <div>
+                  <NavLink to={'/admin/dashboard'} className={({isActive})=>`p-1 pl-5 pr-5 font-light text-sm hover:text-indigo-600 ${isActive && 'border-2 border-indigo-400 rounded-lg bg-indigo-200'}`}>
+                    Openings
+                  </NavLink>
+                  <NavLink to='/admin/make-a-post' className={({isActive})=>`p-1 pl-5 pr-5 font-light text-sm hover:text-indigo-600  ${isActive && 'border-2 border-indigo-400 rounded-lg bg-indigo-100'}`}>
+                    Make a post
+                  </NavLink>
 
                 </div>:<div>
-                  
+                    <NavLink to={'/dashboard'} className={({isActive})=>`p-1 pl-5 pr-5 font-light text-sm hover:text-indigo-600 ${isActive && 'border-2 border-indigo-400 rounded-lg bg-indigo-200'}`}>
+                      Dashboard
+                    </NavLink>
+                    <NavLink to='/applications' className={({isActive})=>`p-1 pl-5 pr-5 font-light text-sm hover:text-indigo-600  ${isActive && 'border-2 border-indigo-400 rounded-lg bg-indigo-100'}`}>
+                      My Applications
+                    </NavLink>
                   </div>}
                   <div ref={dropDownRef} className='relative flex items-center' onClick={(e)=>{e.stopPropagation();setIsDropDownOpen(prev=>!prev)}}>
                     <CircleUserRound size={28}/>
