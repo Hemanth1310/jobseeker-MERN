@@ -3,9 +3,16 @@ import { Role,JobType,Experience,Category  } from '../../generated/prisma/enums.
 
 
 const roleSchema = z.enum(Role)
-const jobTypeSchema = z.enum(JobType)
-const experienceSchema = z.enum(Experience)
-const categorySchema = z.enum(Category)
+const jobTypeSchema = z.enum(JobType,{
+    message: "Please select at least one option"
+})
+const experienceSchema = z.enum(Experience,{
+    message: "Please select at least one option"
+})
+const categorySchema = z.enum(Category,{
+    message: "Please select at least one option"
+})
+
 const emailRules = z.string().email("Invalid email format").trim().toLowerCase()
 
 // Define password rules ONCE so they are identical everywhere
