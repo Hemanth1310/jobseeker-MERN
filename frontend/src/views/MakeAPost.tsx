@@ -5,16 +5,6 @@ import { toast } from 'react-toastify'
 import { AxiosError } from 'axios'
 import { useNavigate } from 'react-router'
 
-// title: z.string().min(1,'Title cannot be empty'),
-//     description: z.string().min(1,'Description cannot be empty'),
-//     companyName: z.string().min(1,'CompanyName cannot be empty'),
-//     location: z.string().min(1,'Location cannot be empty'),
-//     jobType: jobTypeSchema,
-//     experience: experienceSchema,
-//     category: categorySchema,
-//     salary
-
-
 const BASE_API_URL = import.meta.env.VITE_API_URL
 
 const MakeAPost = () => {
