@@ -6,10 +6,10 @@ import HeaderLayout from './components/layouts/HeaderLayout'
 import Home from './views/Home'
 import { ToastContainer } from 'react-toastify'
 import CandidateDashboard from './views/CandidateDashboard'
-import EmployerDashboard from './views/EmployerDashboard'
+import EmployerDashboard from './views/EmployerPages/EmployerDashboard'
 import EmployerProtectedRoutes from './utils/EmployerProtectedRoutes'
 import CandidateProtectedRoutes from './utils/CandidateProtectedRoutes'
-import MakeAPost from './views/MakeAPost'
+import MakeAPost from './views/EmployerPages/MakeAPost'
 
 function App() {
 
