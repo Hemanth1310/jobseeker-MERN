@@ -78,10 +78,40 @@ router.post("/make-a-post", async (req, res) => {
       if (err.code === "P2002") {
         return res.status(403).json({ error: "Record already exists." });
       }
+      if(err.code==='P2025'){
+                return res.status(401).json({error:'User not found'})
+        }
     }
 
     return res.status(500).json({ error: "Unexpected error occurred" });
   }
 });
+
+
+router.get("/employer/jobPostings",async(req,res)=>{
+    const userData = req.userData
+
+    if(!userData || userData.role!=='EMPLOYER'){
+        return res.status(403).json({error:"Forbidden request"})
+    }
+    try{
+        const jobPostings = await prisma.jobPosting.findMany({
+            where: {employerId:userData.id}
+        })
+
+        return res.status(200).json({payload:[...jobPostings], message:"Request Successful."})
+    }catch(err){
+         if (err instanceof PrismaClientKnownRequestError) {
+      if (err.code === "P2002") {
+        return res.status(403).json({ error: "Record already exists." });
+      }
+      if(err.code==='P2025'){
+                return res.status(401).json({error:'User not found'})
+        }
+    }
+
+    return res.status(500).json({ error: "Unexpected error occurred" });
+    }
+})
 
 export default router;
