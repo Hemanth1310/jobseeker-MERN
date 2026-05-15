@@ -9,3 +9,14 @@ export type User= {
     role: Role;
     createdAt: Date;
 }
+
+export type JobPostings = {
+    title: string;
+    description: string;
+    companyName: string;
+    location: string;
+    jobType: "Fulltime" | "Internship" | "Freelance";
+    experience: "Experienced" | "Intermediate" | "Begginer";
+    category: "Software" | "Design" | "Sales" | "Marketing" | "Finance";
+    salary: number | null;
+}
