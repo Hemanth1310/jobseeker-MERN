@@ -57,4 +57,6 @@ export const jobPostingSchema = z.object({
         ).default(null),
 })
 
+export const arrayjobPostingSchema = z.array(jobPostingSchema)
+
 export type jobDataType = z.infer<typeof jobPostingSchema>
