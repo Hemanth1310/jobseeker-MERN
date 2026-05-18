@@ -22,8 +22,8 @@ function App() {
             <Routes>
               <Route path="/" element={<Home/>}></Route>
               <Route element={<EmployerProtectedRoutes/>}>
-                  <Route path='/admin/dashboard' element={<EmployerDashboard/>}/>
-                  <Route path='/admin/make-a-post' element={<MakeAPost/>}/>
+                  <Route path='/employer/dashboard' element={<EmployerDashboard/>}/>
+                  <Route path='/employer/make-a-post' element={<MakeAPost/>}/>
               </Route>
                <Route element={<CandidateProtectedRoutes/>}>
                   <Route path='/dashboard' element={<CandidateDashboard/>}/>
