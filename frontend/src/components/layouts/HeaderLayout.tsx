@@ -45,10 +45,10 @@ const HeaderLayout = () => {
             <div className='flex gap-5 items-center'>
                 {userData.role==='EMPLOYER'?
                 <div>
-                  <NavLink to={'/admin/dashboard'} className={({isActive})=>`p-1 pl-5 pr-5 font-light text-sm hover:text-indigo-600 ${isActive && 'border-2 border-indigo-400 rounded-lg bg-indigo-200'}`}>
+                  <NavLink to={'/employer/dashboard'} className={({isActive})=>`p-1 pl-5 pr-5 font-light text-sm hover:text-indigo-600 ${isActive && 'border-2 border-indigo-400 rounded-lg bg-indigo-200'}`}>
                     Openings
                   </NavLink>
-                  <NavLink to='/admin/make-a-post' className={({isActive})=>`p-1 pl-5 pr-5 font-light text-sm hover:text-indigo-600  ${isActive && 'border-2 border-indigo-400 rounded-lg bg-indigo-100'}`}>
+                  <NavLink to='/employer/make-a-post' className={({isActive})=>`p-1 pl-5 pr-5 font-light text-sm hover:text-indigo-600  ${isActive && 'border-2 border-indigo-400 rounded-lg bg-indigo-100'}`}>
                     Make a post
                   </NavLink>
 
