@@ -70,7 +70,7 @@ const MakeAPost = () => {
                                            theme: "light",
                                    })
                        setIsPending(false)
-                       navigate('/admin/dashboard') 
+                       navigate('/employer/dashboard') 
         }catch(err){
              if(err instanceof AxiosError){
                             setErrors(prev=>({...prev, apiResponse:err.response?.data.error}))
