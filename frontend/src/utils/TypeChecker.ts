@@ -57,6 +57,12 @@ export const jobPostingSchema = z.object({
         ).default(null),
 })
 
-export const arrayjobPostingSchema = z.array(jobPostingSchema)
+export const jobPostSchema = jobPostingSchema.extend({
+    isActive: z.boolean().default(false),
+    id: z.string().min(1, 'ID cannot be empty'),
+});
+
+
+export const arrayjobPostingSchema = z.array(jobPostSchema)
 
 export type jobDataType = z.infer<typeof jobPostingSchema>
