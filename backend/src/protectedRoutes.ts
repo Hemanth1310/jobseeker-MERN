@@ -114,4 +114,28 @@ router.get("/employer/jobPostings",async(req,res)=>{
     }
 })
 
+router.patch('/updateJobStatus/:id',async(req,res)=>{
+    const {id} = req.params
+    const {status} = req.query 
+    const setStatus = status==='true'?true:false
+    try{
+        await prisma.jobPosting.update({
+            where:{id:id},
+            data:{isActive:setStatus}
+        })
+        res.status(200).json({message:"Status successfully updated"})
+    }catch(err){
+    if (err instanceof PrismaClientKnownRequestError) {
+            if (err.code === "P2002") {
+                return res.status(403).json({ error: "Record already exists." });
+            }
+            if(err.code==='P2025'){
+                        return res.status(404).json({error:'User not found'})
+                }
+    }
+
+            return res.status(500).json({ error: "Unexpected error occurred" });
+    }
+})
+
 export default router;
