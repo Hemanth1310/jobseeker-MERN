@@ -10,7 +10,7 @@ export type User= {
     createdAt: Date;
 }
 
-export type JobPostings = {
+export type JobPosts = {
     title: string;
     description: string;
     companyName: string;
@@ -19,4 +19,6 @@ export type JobPostings = {
     experience: "Experienced" | "Intermediate" | "Begginer";
     category: "Software" | "Design" | "Sales" | "Marketing" | "Finance";
     salary: number | null;
+    isActive: boolean,
+    id:string
 }
