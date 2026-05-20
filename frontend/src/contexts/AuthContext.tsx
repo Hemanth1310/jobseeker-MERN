@@ -32,10 +32,8 @@ const AuthContextProvider = ({children}:{children:React.ReactNode}) =>{
     const [isLoading, setIsLoading] = useState(()=>hasAuthCookie())
 
     const updateUserData =(data:User) =>{
-        console.log(data)
         setUserData(data)
         setIsLoading(false)
-        console.log(data)
     }
 
     const logout = () =>{
