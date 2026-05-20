@@ -10,18 +10,6 @@ export type User= {
     createdAt: Date;
 }
 
-export type JobPosts = {
-    title: string;
-    description: string;
-    companyName: string;
-    location: string;
-    jobType: "Fulltime" | "Internship" | "Freelance";
-    experience: "Experienced" | "Intermediate" | "Begginer";
-    category: "Software" | "Design" | "Sales" | "Marketing" | "Finance";
-    salary: number | null;
-    isActive: boolean,
-    id:string
-}
 
 export interface JobFormState {
   title: string;
