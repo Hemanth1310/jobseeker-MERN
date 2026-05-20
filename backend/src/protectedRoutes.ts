@@ -3,6 +3,7 @@ import { prisma } from "./prisma.js";
 import type { JobPostingCreateInput } from "../generated/prisma/models.js";
 import { jobPostingSchema } from "./utils/typechecker.js";
 import { PrismaClientKnownRequestError } from "../generated/prisma/internal/prismaNamespace.js";
+import { isDate } from "node:util/types";
 
 const router = express.Router();
 
@@ -66,6 +67,59 @@ router.post("/make-a-post", async (req, res) => {
     }
 
     await prisma.jobPosting.create({
+      data: {
+        ...parsedData.data,
+        employerId: employer.id,
+      },
+    });
+
+    res.status(201).json({ message: "Job successfully posted." });
+  } catch (err) {
+    if (err instanceof PrismaClientKnownRequestError) {
+      if (err.code === "P2002") {
+        return res.status(403).json({ error: "Record already exists." });
+      }
+      if(err.code==='P2025'){
+                return res.status(401).json({error:'User not found'})
+        }
+    }
+
+    return res.status(500).json({ error: "Unexpected error occurred" });
+  }
+});
+
+router.patch("/update-a-post/:id", async (req, res) => {
+  const userData = req.userData;
+  const {id} = req.params
+  const jobPostData: JobPostingCreateInput = req.body;
+  const parsedData = jobPostingSchema.safeParse(jobPostData);
+
+  if (!userData) {
+    return res.status(400).json({ error: "Invalid User" });
+  }
+
+  if (!parsedData.success) {
+    return res.status(404).json({ error: "Invalid Format." });
+  }
+  if (!isDate) {
+    return res.status(400).json({ error: "Id not found" });
+  }
+
+  try {
+    const employer = await prisma.user.findFirst({
+      where: {
+        id: userData.id,
+      },
+    });
+
+    if (employer?.role !== "EMPLOYER") {
+      return res.status(404).json({ error: "Only Employer can post a job." });
+    }
+
+    await prisma.jobPosting.update({
+        where:{
+            id:id
+        },
       data: {
         ...parsedData.data,
         employerId: employer.id,
