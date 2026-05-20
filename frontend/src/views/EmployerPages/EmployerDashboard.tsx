@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import type { JobPosts } from '../../types'
 import axios from '../../utils/authMiddleware'
-import { arrayjobPostingSchema } from '../../utils/TypeChecker'
+import { arrayjobPostingSchema, type JobPostType } from '../../utils/TypeChecker'
 import { AxiosError } from 'axios'
 import Loading from '../../components/layouts/Loading'
 import JobCard from '../../components/layouts/JobCard'
 import { toast } from 'react-toastify'
-
 const BASE_API_URL = import.meta.env.VITE_API_URL
 
 const EmployerDashboard = () => {
-  const [jobPosts, setJobPosts] = useState<JobPosts[]|null>(null) 
+  const [jobPosts, setJobPosts] = useState<JobPostType[]|null>(null) 
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
