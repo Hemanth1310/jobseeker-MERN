@@ -91,7 +91,7 @@ const UpdateAPost = () => {
           }
   
           try{
-              await axios.post(`${BASE_API_URL}/api/private/make-a-post`,parsedData.data)
+              await axios.patch(`${BASE_API_URL}/api/private/update-a-post/${id}`,parsedData.data)
                toast.success('Registration Successful',{
                                              position: "top-right",
                                              autoClose: 5000,
