@@ -79,7 +79,7 @@ const EmployerDashboard = () => {
     <div className='w-full h-full '>
         <h1 className='text-2xl'>Dashboard</h1>
         <div className='grid grid-cols-3 gap-5 mt-5 '>
-            {jobPosts?.map((post)=>(<JobCard jobPosting={post}>
+            {jobPosts?.map((post)=>(<JobCard jobPosting={post} key={post.id}>
             <div className='flex items-center '>
               <div className='w-full flex items-center gap-1'>
                   <label >Role:</label>
