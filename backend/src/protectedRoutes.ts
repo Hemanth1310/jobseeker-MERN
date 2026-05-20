@@ -138,4 +138,30 @@ router.patch('/updateJobStatus/:id',async(req,res)=>{
     }
 })
 
+router.get("/employer/jobPosting/:id",async(req,res)=>{
+    
+    const {id} = req.params
+    console.log(id)
+    if(!id){
+        return res.status(403).json({error:"Forbidden request"})
+    }
+    try{
+        const jobPosting = await prisma.jobPosting.findUnique({
+            where: {id:id}
+        })
+        return res.status(200).json({payload:jobPosting, message:"Request Successful."})
+    }catch(err){
+         if (err instanceof PrismaClientKnownRequestError) {
+      if (err.code === "P2002") {
+        return res.status(403).json({ error: "Record already exists." });
+      }
+      if(err.code==='P2025'){
+                return res.status(401).json({error:'User not found'})
+        }
+    }
+
+    return res.status(500).json({ error: "Unexpected error occurred" });
+    }
+})
+
 export default router;
