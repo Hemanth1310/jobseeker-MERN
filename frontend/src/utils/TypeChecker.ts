@@ -65,4 +65,5 @@ export const jobPostSchema = jobPostingSchema.extend({
 
 export const arrayjobPostingSchema = z.array(jobPostSchema)
 
-export type jobDataType = z.infer<typeof jobPostingSchema>
+export type JobPostingType = z.infer<typeof jobPostingSchema>
+export type JobPostType = z.infer<typeof jobPostSchema>
