@@ -10,6 +10,7 @@ import EmployerDashboard from './views/EmployerPages/EmployerDashboard'
 import EmployerProtectedRoutes from './utils/EmployerProtectedRoutes'
 import CandidateProtectedRoutes from './utils/CandidateProtectedRoutes'
 import MakeAPost from './views/EmployerPages/MakeAPost'
+import UpdateAPost from './views/EmployerPages/UpdateAPost'
 
 function App() {
 
@@ -24,6 +25,7 @@ function App() {
               <Route element={<EmployerProtectedRoutes/>}>
                   <Route path='/employer/dashboard' element={<EmployerDashboard/>}/>
                   <Route path='/employer/make-a-post' element={<MakeAPost/>}/>
+                  <Route path='/employer/update-a-post/:id' element={<UpdateAPost/>}/>
               </Route>
                <Route element={<CandidateProtectedRoutes/>}>
                   <Route path='/dashboard' element={<CandidateDashboard/>}/>
