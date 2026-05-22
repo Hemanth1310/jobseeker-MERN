@@ -38,6 +38,17 @@ export const loginSchema = z.object({
     password: passwordRules
 })
 
+export const userSchema = z.object({
+    email: emailRules,
+     id: z.string().min(1, 'ID cannot be empty'),
+    firstName: z.string().min(1,'Firstname cannot be empty'),
+    lastName: z.string().min(1,'Lastname cannot be empty'),
+    role: roleSchema,
+    createdAt:z.string()
+})
+
+export type User = z.infer<typeof userSchema>
+
 export const jobPostingSchema = z.object({
     title: z.string().min(1,'Title cannot be empty'),
     description: z.string().min(1,'Description cannot be empty'),
