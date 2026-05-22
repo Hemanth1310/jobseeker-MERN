@@ -1,7 +1,8 @@
 import { createContext, useEffect, useState } from "react";
-import type { User } from "../types";
+
 import axios from '../utils/authMiddleware'
 import { AxiosError } from "axios";
+import type { User } from "../utils/TypeChecker";
 type AuthContextType = {
     userData: User | null,
     isLoading:boolean,
