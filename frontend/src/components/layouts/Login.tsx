@@ -1,9 +1,9 @@
 import React,{useState} from 'react'
-import { loginSchema } from '../../utils/TypeChecker'
+import { loginSchema, userSchema } from '../../utils/TypeChecker'
 import axios from '../../utils/authMiddleware'
 import { toast } from 'react-toastify'
 import { useAuthContextData } from '../../utils/useAuthContextData'
-import type { toggeler, User } from '../../types'
+import type { toggeler} from '../../types'
 import { AxiosError } from 'axios'
 import { useNavigate } from 'react-router'
 type Props = {
@@ -39,6 +39,11 @@ const Login = ({toggleTo, onClose}: Props) => {
             if(!response.status){
                 throw new Error('Unexpected error occured.')
             }
+            const parsedUserData = userSchema.safeParse(response.data.payload)
+            if(!parsedUserData.success){
+                console.log(parsedUserData.error.issues)
+                throw new Error('Unexpected error occured.')
+            }
             toast.success('Login Successful',{
                     position: "top-right",
                     autoClose: 5000,
@@ -49,8 +54,14 @@ const Login = ({toggleTo, onClose}: Props) => {
                     progress: undefined,
                     theme: "light",
             })
-            updateUserData(response.data.payload as User)
-            navigate('/')
+
+            updateUserData(parsedUserData.data)
+            if(parsedUserData.data.role==='CANDIDATE'){
+                navigate('/dashboard')
+            }else{
+                navigate('/employer/dashboard')
+            }
+            
             onClose()
         }catch(err){
             if(err instanceof AxiosError){
