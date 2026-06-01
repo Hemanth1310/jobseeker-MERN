@@ -218,9 +218,26 @@ router.get("/employer/jobPosting/:id",async(req,res)=>{
 })
 
 router.get('/candidate/jobPostings',async(req, res)=>{
+    const userId = req.userData?.id
+    const userRole = req.userData?.role
     try{
-      const jobPostings = await prisma.jobPosting.findMany()
-      return res.status(200).json({payload:jobPostings, message:"Job Postings fetched successfully"})
+      const jobPostings = await prisma.jobPosting.findMany({
+        include:{
+         wishlistedBy: userRole === "CANDIDATE" && userId 
+            ? {
+                where: { id: userId },
+                select: { id: true }
+              }
+            : false
+              }
+      })
+
+      const formattedJobPostings = jobPostings.map((job)=>({
+        ...job,
+        isWishlisted:job.wishlistedBy ? job.wishlistedBy.length > 0 : false,
+        wishlistedBy:undefined
+      }))
+      return res.status(200).json({payload:formattedJobPostings, message:"Job Postings fetched successfully"})
     }catch(err){
          if (err instanceof PrismaClientKnownRequestError) {
       if (err.code === "P2002") {
@@ -239,7 +256,7 @@ router.patch('/candidate/wishlist/:jobPostId',async(req,res)=>{
   const {jobPostId} = req.params
   const userData = req.userData
 
-    if(!userData || userData.role!=='EMPLOYER'){
+    if(!userData || userData.role==='EMPLOYER'){
         return res.status(403).json({error:"Forbidden request"})
     }
 
@@ -274,7 +291,7 @@ router.patch('/candidate/dewishlist/:jobPostId',async(req,res)=>{
   const {jobPostId} = req.params
   const userData = req.userData
 
-    if(!userData || userData.role!=='EMPLOYER'){
+    if(!userData || userData.role==='EMPLOYER'){
         return res.status(403).json({error:"Forbidden request"})
     }
 
@@ -289,7 +306,7 @@ router.patch('/candidate/dewishlist/:jobPostId',async(req,res)=>{
       })
 
       return res.status(200).json({
-        message:'Job wishlisted'
+        message:'Job de-wishlisted'
       })
     }catch(err){
       if (err instanceof PrismaClientKnownRequestError) {
