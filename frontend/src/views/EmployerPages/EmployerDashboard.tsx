@@ -5,11 +5,18 @@ import { AxiosError } from 'axios'
 import Loading from '../../components/layouts/Loading'
 import JobCard from '../../components/layouts/JobCard'
 import { toast } from 'react-toastify'
+import { Edit } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 const BASE_API_URL = import.meta.env.VITE_API_URL
 
 const EmployerDashboard = () => {
   const [jobPosts, setJobPosts] = useState<JobPostType[]|null>(null) 
   const [isLoading, setIsLoading] = useState(true)
+
+      const navigate = useNavigate()
+    const handleNavigation = (id:string)=>{
+        navigate(`/employer/update-a-post/${id}`)
+    }
 
   useEffect(() => {
     const fetchJobPosts = async () => {
@@ -79,7 +86,16 @@ const EmployerDashboard = () => {
     <div className='w-full h-full '>
         <h1 className='text-2xl'>Dashboard</h1>
         <div className='grid grid-cols-1 sm:grid-cols-3 gap-5 mt-5 '>
-            {jobPosts?.map((post)=>(<JobCard jobPosting={post} key={post.id}>
+            {jobPosts?.map((post)=>(<JobCard key={post.id}>
+                      <div className='flex justify-between'>
+            <div className='flex flex-col gap-2'>
+                <h1 className='text-xl font-semibold'>{post.title}</h1>
+                <p className='text-mist-500 text-sm'>{post.companyName}</p>
+            </div>
+            <div>
+                <Edit size={28} onClick={()=>handleNavigation(post.id)}/>
+            </div>
+        </div>
             <div className='flex items-center '>
               <div className='w-full flex items-center gap-1'>
                   <label >Role:</label>
