@@ -73,8 +73,16 @@ export const jobPostSchema = jobPostingSchema.extend({
     id: z.string().min(1, 'ID cannot be empty'),
 });
 
+export const candidateJobPostSchema = jobPostSchema.extend({
+   isWishlisted:z.boolean()
+});
+
+export const arrayCandidateJobPostingSchema = z.array(candidateJobPostSchema)
+
 
 export const arrayjobPostingSchema = z.array(jobPostSchema)
 
 export type JobPostingType = z.infer<typeof jobPostingSchema>
 export type JobPostType = z.infer<typeof jobPostSchema>
+
+export type cadidateJobPostType= z.infer<typeof candidateJobPostSchema>
