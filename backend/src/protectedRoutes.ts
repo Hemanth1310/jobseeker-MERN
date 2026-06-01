@@ -195,7 +195,6 @@ router.patch('/updateJobStatus/:id',async(req,res)=>{
 router.get("/employer/jobPosting/:id",async(req,res)=>{
     
     const {id} = req.params
-    console.log(id)
     if(!id){
         return res.status(403).json({error:"Forbidden request"})
     }
@@ -217,5 +216,94 @@ router.get("/employer/jobPosting/:id",async(req,res)=>{
     return res.status(500).json({ error: "Unexpected error occurred" });
     }
 })
+
+router.get('/candidate/jobPostings',async(req, res)=>{
+    try{
+      const jobPostings = await prisma.jobPosting.findMany()
+      return res.status(200).json({payload:jobPostings, message:"Job Postings fetched successfully"})
+    }catch(err){
+         if (err instanceof PrismaClientKnownRequestError) {
+      if (err.code === "P2002") {
+        return res.status(403).json({ error: "Record already exists." });
+      }
+      if(err.code==='P2025'){
+                return res.status(401).json({error:'User not found'})
+        }
+    }
+
+    return res.status(500).json({ error: "Unexpected error occurred" });
+    }
+})
+
+router.patch('/candidate/wishlist/:jobPostId',async(req,res)=>{
+  const {jobPostId} = req.params
+  const userData = req.userData
+
+    if(!userData || userData.role!=='EMPLOYER'){
+        return res.status(403).json({error:"Forbidden request"})
+    }
+
+    try{
+      await prisma.user.update({
+        where:{id:userData.id},
+        data:{
+          wishlist:{
+            connect:{id:jobPostId}
+          }
+        }
+      })
+
+      return res.status(200).json({
+        message:'Job wishlisted'
+      })
+    }catch(err){
+      if (err instanceof PrismaClientKnownRequestError) {
+      if (err.code === "P2002") {
+        return res.status(403).json({ error: "Record already exists." });
+      }
+      if(err.code==='P2025'){
+                return res.status(401).json({error:'User not found'})
+        }
+    }
+    }
+
+
+})
+
+router.patch('/candidate/dewishlist/:jobPostId',async(req,res)=>{
+  const {jobPostId} = req.params
+  const userData = req.userData
+
+    if(!userData || userData.role!=='EMPLOYER'){
+        return res.status(403).json({error:"Forbidden request"})
+    }
+
+    try{
+      await prisma.user.update({
+        where:{id:userData.id},
+        data:{
+          wishlist:{
+            disconnect:{id:jobPostId}
+          }
+        }
+      })
+
+      return res.status(200).json({
+        message:'Job wishlisted'
+      })
+    }catch(err){
+      if (err instanceof PrismaClientKnownRequestError) {
+      if (err.code === "P2002") {
+        return res.status(403).json({ error: "Record already exists." });
+      }
+      if(err.code==='P2025'){
+                return res.status(401).json({error:'User not found'})
+        }
+    }
+    }
+
+
+})
+
 
 export default router;
