@@ -11,6 +11,7 @@ import EmployerProtectedRoutes from './utils/EmployerProtectedRoutes'
 import CandidateProtectedRoutes from './utils/CandidateProtectedRoutes'
 import MakeAPost from './views/EmployerPages/MakeAPost'
 import UpdateAPost from './views/EmployerPages/UpdateAPost'
+import JobApplication from './views/CandidatePages/JobApplication'
 
 function App() {
 
@@ -29,6 +30,7 @@ function App() {
               </Route>
                <Route element={<CandidateProtectedRoutes/>}>
                   <Route path='/dashboard' element={<CandidateDashboard/>}/>
+                  <Route path='/candidate/job/:id' element={<JobApplication/>}/>
               </Route>
              
             </Routes>
