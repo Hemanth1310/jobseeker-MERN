@@ -252,6 +252,48 @@ router.get('/candidate/jobPostings',async(req, res)=>{
     }
 })
 
+
+router.get("/candidate/jobPosting/:id",async(req,res)=>{
+    
+    const {id} = req.params
+    const userId = req.userData?.id
+    const userRole = req.userData?.role
+    if(!id){
+        return res.status(403).json({error:"Forbidden request"})
+    }
+    try{
+        const jobPosting = await prisma.jobPosting.findUnique({
+            where: {id:id},
+            include:{
+              wishlistedBy: userRole === "CANDIDATE" && userId 
+                  ? {
+                      where: { id: userId },
+                      select: { id: true }
+                    }
+                  : false
+                    }
+        })
+
+          const formattedJobPosting = {
+        ...jobPosting,
+        isWishlisted:jobPosting?.wishlistedBy ? jobPosting.wishlistedBy.length > 0 : false,
+        wishlistedBy:undefined
+      }
+        return res.status(200).json({payload:formattedJobPosting, message:"Request Successful."})
+    }catch(err){
+         if (err instanceof PrismaClientKnownRequestError) {
+      if (err.code === "P2002") {
+        return res.status(403).json({ error: "Record already exists." });
+      }
+      if(err.code==='P2025'){
+                return res.status(401).json({error:'User not found'})
+        }
+    }
+
+    return res.status(500).json({ error: "Unexpected error occurred" });
+    }
+})
+
 router.patch('/candidate/wishlist/:jobPostId',async(req,res)=>{
   const {jobPostId} = req.params
   const userData = req.userData
