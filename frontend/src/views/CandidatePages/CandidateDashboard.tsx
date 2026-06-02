@@ -7,7 +7,7 @@ import {
 } from "../../utils/TypeChecker";
 import { AxiosError } from "axios";
 import Loading from "../../components/layouts/Loading";
-import { ArchiveIcon, Bookmark, BookmarkCheck, BookMarked, Edit } from "lucide-react";
+import { Bookmark, BookmarkCheck,  } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const BASE_API_URL = import.meta.env.VITE_API_URL;
@@ -17,7 +17,7 @@ const CandidateDashboard = () => {
 
   const navigate = useNavigate();
   const handleNavigation = (id: string) => {
-    navigate(`/employer/update-a-post/${id}`);
+    navigate(`/candidate/job/${id}`);
   };
 
   useEffect(() => {
@@ -89,7 +89,7 @@ const CandidateDashboard = () => {
                 
               </div>
             </div>
-            <div className="flex items-center ">
+            <div className="flex items-center mt-5">
               <div className="w-full flex items-center gap-1">
                 {/* <label>Role:</label>
                 <select
@@ -101,6 +101,7 @@ const CandidateDashboard = () => {
                   <option value="true">Active</option>
                   <option value="false">Closed</option>
                 </select> */}
+                <button className="bg-brand-primary hover:bg-brand-secondary text-white text-sm p-2 rounded-lg" onClick={()=>handleNavigation(post.id)}>Apply Now</button>
               </div>
             </div>
           </JobCard>
