@@ -100,6 +100,10 @@ model Application {
 
   // The "snapshot" of the profile details at the time of application
   coverLetter String   @db.Text
+  EarliestStartDate DateTime?
+  countryOfResidence String
+  ValidWorkPermit   Boolean  
+
   resumePath  String   // The specific resume used for THIS application
   status      String   @default("PENDING") // PENDING, REVIEWING, ACCEPTED, REJECTED
   
