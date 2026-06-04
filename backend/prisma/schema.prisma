@@ -100,7 +100,7 @@ model Application {
 
   // The "snapshot" of the profile details at the time of application
   coverLetter String   @db.Text
-  EarliestStartDate DateTime?
+  EarliestStartDate DateTime
   countryOfResidence String
   ValidWorkPermit   Boolean  
 
