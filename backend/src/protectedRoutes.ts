@@ -401,6 +401,7 @@ router.post('/candidate/apply/:jobId',upload.single("file"),async(req,res)=>{
           candidateId: user.id,
       }
     })
+    return res.status(201).json({ message: "Application submitted successfully" })
   }catch(err){
     if (err instanceof PrismaClientKnownRequestError) {
       if (err.code === "P2002") {
