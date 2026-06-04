@@ -1,9 +1,10 @@
 import express from "express";
 import { prisma } from "./prisma.js";
-import type { JobPostingCreateInput } from "../generated/prisma/models.js";
-import { jobPostingSchema } from "./utils/typechecker.js";
+import type { ApplicationCreateInput, JobPostingCreateInput } from "../generated/prisma/models.js";
+import { applicationSchema, jobPostingSchema } from "./utils/typechecker.js";
 import { PrismaClientKnownRequestError } from "../generated/prisma/internal/prismaNamespace.js";
 import { isDate } from "node:util/types";
+import upload from "./utils/multer.js";
 
 const router = express.Router();
 
@@ -361,6 +362,56 @@ router.patch('/candidate/dewishlist/:jobPostId',async(req,res)=>{
     }
     }
 
+
+})
+
+router.post('/candidate/apply/:jobId',upload.single("file"),async(req,res)=>{
+  const file = req.file
+  const userId = req.userData?.id
+  const {jobId} = req.params
+  const applicationDetails = req.body
+  const parsedData = applicationSchema.safeParse(applicationDetails)
+  if(!file || !userId || !jobId){
+    return res.status(404).json({error:"Invalid input"})
+  }
+
+  if(!parsedData.success){
+    return res.status(400).json({error:"Invalid input"})
+  }
+
+  try{
+    const job = await prisma.jobPosting.findFirst({
+      where:{id:jobId as string}
+    })
+    const user = await prisma.user.findFirst({
+      where:{id:userId}
+    })
+    if(!job){
+      return res.status(401).json({error:'Job not found'})
+    }
+    if(!user){
+      return res.status(401).json({error:'USer not found'})
+    }
+
+    await prisma.application.create({
+      data:{
+          ...parsedData.data,
+          resumePath: file.path,
+          jobId: job.id,
+          candidateId: user.id,
+      }
+    })
+  }catch(err){
+    if (err instanceof PrismaClientKnownRequestError) {
+      if (err.code === "P2002") {
+        return res.status(403).json({ error: "Record already exists." });
+      }
+      if(err.code==='P2025'){
+                return res.status(401).json({error:'Job not found'})
+        }
+    }
+    return res.status(500).json({ error: "Unexpected error occurred" });
+  }
 
 })
 
