@@ -44,3 +44,17 @@ export const jobPostingSchema = z.object({
     category: categorySchema,
     salary: z.number().int().nonnegative().nullable().optional().default(null),
 })
+
+
+export const applicationSchema = z.object({
+    coverLetter: z.string().min(1,'CoverLetter cannot be empty'),
+    countryOfResidence: z.string().min(1,'Description cannot be empty'),
+    EarliestStartDate: z.coerce.date({
+        message: "Please select a valid date"
+    }),
+    ValidWorkPermit: z.preprocess((val) => {
+    if (val === "true" || val === "1" || val === true || val === "True"||val === "TRUE" ) return true;
+    if (val === "false" || val === "0" || val === false || val === "False" || val === "FALSE") return false;
+    return val; // Let Zod's boolean check handle invalid values
+    }, z.boolean()),
+})
