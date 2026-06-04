@@ -86,3 +86,13 @@ export type JobPostingType = z.infer<typeof jobPostingSchema>
 export type JobPostType = z.infer<typeof jobPostSchema>
 
 export type cadidateJobPostType= z.infer<typeof candidateJobPostSchema>
+
+
+export const applicationSchema = z.object({
+    coverLetter: z.string().min(1,'CoverLetter cannot be empty'),
+    countryOfResidence: z.string().min(1,'Description cannot be empty'),
+    ValidWorkPermit: z.boolean(),
+    EarliestStartDate: z.coerce.date({
+            message: "Please select a valid date"
+        })
+})
