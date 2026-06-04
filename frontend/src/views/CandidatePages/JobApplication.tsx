@@ -26,6 +26,7 @@ const JobApplication = () => {
         apiResponse:""
     })
     const [isPending, setIsPending] = useState(false)
+    const [isSubmitted, setIsSubmitted] = useState(false)
     useEffect(()=>{
         const fetchJobPostById = async()=>{
             try{
@@ -62,7 +63,9 @@ const JobApplication = () => {
         }
     };
 
-    const handleSubmit=async()=>{
+    const handleSubmit=async(e:React.FormEvent)=>{
+        e.preventDefault()
+        setIsSubmitted(false)
             setErrors({
                 coverLetter: "",
                 countryOfResidence: "",
@@ -74,6 +77,7 @@ const JobApplication = () => {
         setIsPending(true)
             if(!file){
                 setErrors(prev=>({...prev,files:"Please upload a resume."}))
+                setIsPending(false);
                 return
             }
 
@@ -83,6 +87,7 @@ const JobApplication = () => {
                 for(const issue of parsedData.error.issues){
                     setErrors(prev=>({...prev,[issue.path[0]]:issue.message}))
                 }
+                setIsPending(false);
                 return
             }
 
@@ -94,7 +99,7 @@ const JobApplication = () => {
             formData.append('EarliestStartDate',applicationDetails.EarliestStartDate)
             formData.append('file',file)
             try{
-                await axios.post(`${BASE_API_URL}/api/private/candidate/apply/${jobPost?.id}`, formData,{
+                await axios.post(`${BASE_API_URL}/api/private/candidate/apply/${id}`, formData,{
                     headers:{
                         "Content-Type":"multipart/form-data"
                     }
@@ -109,6 +114,7 @@ const JobApplication = () => {
                                                            progress: undefined,
                                                            theme: "light",
                                                    })
+                setIsSubmitted(true)
             } catch(err){
                 if(isAxiosError(err)){
                     console.log(err.response?.data?.error)
@@ -147,10 +153,13 @@ const JobApplication = () => {
                 </div>
                 <p className='mt-5 text-justify'>{jobPost?.description}</p>
             </div>
+            {isSubmitted?<div className='flex-1  h-full flex flex-col items-center gap-5'>
+                <p className='border border-green-600 bg-green-100 p-5 rounded-lg'>Thank you for your application. We are pleased that you are interested in a postion at {jobPost?.companyName}. Please allow us some time to review your application. We will get back to you as soon as possible!</p>
+                </div>:
 
-                <form action={handleSubmit} className='flex-1 h-full flex flex-col gap-5'>
+                <form onSubmit={handleSubmit} className='flex-1 h-full flex flex-col gap-5'>
                <div className='w-full flex flex-col gap-1'>
-                        <label className='w-full border-2 flex flex-col items-center rounded-lg border-mist-200 text-lg p-4 cursor-pointer hover:bg-slate-50 transition-colors overflow-scroll'>
+                        <label className='w-full border-2 flex flex-col items-center rounded-lg border-brand-secondary bg-indigo-50 text-lg p-4 cursor-pointer hover:bg-indigo-100 transition-colors overflow-scroll'>
                             <span>Drop Resume (PDF/Doc)</span>
                             {/* File value binding removed; using specialized handleFileChange */}
                             <input 
@@ -191,11 +200,11 @@ const JobApplication = () => {
                 </div> 
                {errors.apiResponse && <p className='text-xs text-red-500'>Failed to submit application: {errors.apiResponse}</p>}
                 <div className='w-full flex justify-end'>
-                    <button type='submit' className=' bg-brand-primary text-white w-1/3 p-2 rounded-lg'>{isPending?'In progress':'Submit'}</button>
+                    <button type='submit' disabled={isPending} className=' bg-brand-primary text-white w-1/3 p-2 rounded-lg disabled:cursor-not-allowed disabled:bg-mist-400'>{isPending?'In progress':'Submit'}</button>
                 </div>
             
         </form>
-
+}
         </div>
        
 
