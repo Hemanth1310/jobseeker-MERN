@@ -7,13 +7,14 @@ import {
 } from "../../utils/TypeChecker";
 import { AxiosError } from "axios";
 import Loading from "../../components/layouts/Loading";
-import { Bookmark, BookmarkCheck,  } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import Wishlist from "../../components/layouts/Wishlist";
 
 const BASE_API_URL = import.meta.env.VITE_API_URL;
 const CandidateDashboard = () => {
   const [jobPosts, setJobPosts] = useState<cadidateJobPostType[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+
 
   const navigate = useNavigate();
   const handleNavigation = (id: string) => {
@@ -53,6 +54,7 @@ const CandidateDashboard = () => {
   if (jobPosts.length === 0) return <div>No job postings found.</div>;
 
   const handleDeWishlist = async(id:string)=>{
+
     try{
        await axios.patch(`${BASE_API_URL}/api/private/candidate/dewishlist/${id}`)
        setJobPosts(prev=>prev.map(post=>post.id===id?{...post,isWishlisted:false}:post))
@@ -63,13 +65,13 @@ const CandidateDashboard = () => {
   }
 
    const handleWishlist = async(id:string)=>{
+
     try{
        await axios.patch(`${BASE_API_URL}/api/private/candidate/wishlist/${id}`)
        setJobPosts(prev=>prev.map(post=>post.id===id?{...post,isWishlisted:true}:post))
     }catch(err){
         console.log("Failed to save:"+err)
     }
-
   }
 
   return (
@@ -84,9 +86,7 @@ const CandidateDashboard = () => {
                 <p className="text-mist-500 text-sm">{post.companyName}</p>
               </div>
               <div>
-                {post.isWishlisted?<BookmarkCheck size={28} onClick={() => handleDeWishlist(post.id)} />:
-                  <Bookmark size={28} onClick={() => handleWishlist(post.id)} />}
-                
+                <Wishlist isWishlisted={post.isWishlisted} id={post.id} handleDeWishlist={handleDeWishlist} handleWishlist={handleWishlist}/>
               </div>
             </div>
             <div className="flex items-center mt-5">
