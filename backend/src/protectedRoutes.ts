@@ -416,5 +416,45 @@ router.post('/candidate/apply/:jobId',upload.single("file"),async(req,res)=>{
 
 })
 
+router.get('/candidate/my-applications',async(req,res)=>{
+  const user = req.userData 
+
+  if(!user){
+    return res.status(403).json({error:"User not loggedIn"})
+  }
+
+  try{
+    const usersWithApplications = await prisma.user.findUnique({
+      where:{id:user.id},
+      include:{
+        applications:{
+          include:{
+            job:true
+          }
+        }
+      }
+    })
+
+    if(!usersWithApplications){
+       return res.status(403).json({error:"User not found"})
+    }
+
+    const applications = usersWithApplications.applications
+
+    return res.status(200).json({payload:applications,message:"Applications retirved"})
+  }catch(err){
+         if (err instanceof PrismaClientKnownRequestError) {
+      if (err.code === "P2002") {
+        return res.status(403).json({ error: "Record already exists." });
+      }
+      if(err.code==='P2025'){
+                return res.status(401).json({error:'User not found'})
+        }
+    }
+
+    return res.status(500).json({ error: "Unexpected error occurred" });
+    }
+})
+
 
 export default router;
