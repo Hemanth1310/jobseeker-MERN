@@ -14,6 +14,7 @@ const BASE_API_URL = import.meta.env.VITE_API_URL;
 const CandidateDashboard = () => {
   const [jobPosts, setJobPosts] = useState<cadidateJobPostType[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
 
 
   const navigate = useNavigate();
@@ -33,6 +34,7 @@ const CandidateDashboard = () => {
         if (!parsedData.success) {
           console.error("Validation Failed: Invalid data recieved");
           setJobPosts([]);
+          setHasError(true)
           return;
         }
         setJobPosts(parsedData.data);
@@ -40,6 +42,7 @@ const CandidateDashboard = () => {
         if (err instanceof AxiosError) {
           console.log(err.message);
         }
+        setHasError(true)
         setJobPosts([]);
       } finally {
         setIsLoading(false);
@@ -50,7 +53,9 @@ const CandidateDashboard = () => {
   }, []);
 
   if (isLoading) return <Loading />;
-  if (jobPosts === null) return <div>Failed to load resources</div>;
+  if (hasError || !jobPosts) {
+        return <div className="p-5 text-red-500 font-medium">Failed to load applications. Please try again later.</div>
+    }
   if (jobPosts.length === 0) return <div>No job postings found.</div>;
 
   const handleDeWishlist = async(id:string)=>{
@@ -91,16 +96,6 @@ const CandidateDashboard = () => {
             </div>
             <div className="flex items-center mt-5">
               <div className="w-full flex items-center gap-1">
-                {/* <label>Role:</label>
-                <select
-                  name="role"
-                  className="border-2 rounded-lg border-mist-200 text-lg p-1 pl-3"
-                  value={post.isActive + ""}
-                  onChange={(e) => handleStatus(e, post.id)}
-                >
-                  <option value="true">Active</option>
-                  <option value="false">Closed</option>
-                </select> */}
                 <button className="bg-brand-primary hover:bg-brand-secondary text-white text-sm p-2 rounded-lg" onClick={()=>handleNavigation(post.id)}>Apply Now</button>
               </div>
             </div>

@@ -5,11 +5,13 @@ import { applicationSchema, candidateJobPostSchema, type cadidateJobPostType } f
 import { Activity, ChartBarStacked, Coins, FlagTriangleRightIcon } from 'lucide-react';
 import { isAxiosError } from 'axios';
 import { toast } from 'react-toastify';
+import Loading from '../../components/layouts/Loading';
 const BASE_API_URL = import.meta.env.VITE_API_URL;
 
 const JobApplication = () => {
     const {id} = useParams()
     const [jobPost,setJobPost] = useState<cadidateJobPostType>()
+    const [isLoading, setIsLoading] = useState(true);
     const [applicationDetails, setApplicationDetails] = useState({
         coverLetter: "",
         countryOfResidence: "",
@@ -28,6 +30,7 @@ const JobApplication = () => {
     const [isPending, setIsPending] = useState(false)
     const [isSubmitted, setIsSubmitted] = useState(false)
     useEffect(()=>{
+        setIsLoading(true)
         const fetchJobPostById = async()=>{
             try{
                   const { data } = await axios.get(
@@ -46,6 +49,7 @@ const JobApplication = () => {
             }
         }
         fetchJobPostById()
+        setIsLoading(false)
     },[])
 
     const handleChange=(e:React.ChangeEvent<HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement>)=>{
@@ -137,6 +141,10 @@ const JobApplication = () => {
                 setIsPending(false)
             }
             
+    }
+
+    if(isLoading){
+        return <Loading/>
     }
   return (
     <div className='w-full h-full flex flex-col gap-1'>
