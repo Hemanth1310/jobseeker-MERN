@@ -56,7 +56,7 @@ const HeaderLayout = () => {
                     <NavLink to={'/dashboard'} className={({isActive})=>`p-1 pl-5 pr-5 font-light text-sm hover:text-indigo-600 ${isActive && 'border-2 border-indigo-400 rounded-lg bg-indigo-200'}`}>
                       Dashboard
                     </NavLink>
-                    <NavLink to='/applications' className={({isActive})=>`p-1 pl-5 pr-5 font-light text-sm hover:text-indigo-600  ${isActive && 'border-2 border-indigo-400 rounded-lg bg-indigo-100'}`}>
+                    <NavLink to='/MyApplications' className={({isActive})=>`p-1 pl-5 pr-5 font-light text-sm hover:text-indigo-600  ${isActive && 'border-2 border-indigo-400 rounded-lg bg-indigo-100'}`}>
                       My Applications
                     </NavLink>
                   </div>}
