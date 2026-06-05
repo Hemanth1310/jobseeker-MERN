@@ -38,6 +38,13 @@ enum Category{
   Finance
 }
 
+enum Status{
+  PENDING
+  REVIEWING
+  ACCEPTED
+  REJECTED
+}
+
 model User {
   id          String   @id @default(uuid())
   email       String   @unique
@@ -105,7 +112,8 @@ model Application {
   ValidWorkPermit   Boolean  
 
   resumePath  String   // The specific resume used for THIS application
-  status      String   @default("PENDING") // PENDING, REVIEWING, ACCEPTED, REJECTED
+  status      Status   @default(PENDING) // PENDING, REVIEWING, ACCEPTED, REJECTED
+  feedback    String    @default("Currently Reviewing")
   
   appliedAt   DateTime @default(now())
 
