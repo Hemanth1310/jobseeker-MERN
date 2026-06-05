@@ -81,7 +81,7 @@ const CandidateDashboard = () => {
 
   return (
     <div className="w-full h-full ">
-      <h1 className="text-2xl">Dashboard</h1>
+      <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Dashboard</h1>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mt-5 ">
         {jobPosts?.map((post) => (
           <JobCard key={post.id}>
