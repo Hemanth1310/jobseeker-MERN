@@ -96,8 +96,11 @@ const CandidateDashboard = () => {
             </div>
             <div className="flex items-center mt-5">
               <div className="w-full flex items-center gap-1">
+                {post.hasApplied? <div className="bg-mist-200 text-white text-sm p-2 rounded-lg">Applied</div>:
                 <button className="bg-brand-primary hover:bg-brand-secondary text-white text-sm p-2 rounded-lg" onClick={()=>handleNavigation(post.id)}>Apply Now</button>
+              }
               </div>
+                
             </div>
           </JobCard>
         ))}
