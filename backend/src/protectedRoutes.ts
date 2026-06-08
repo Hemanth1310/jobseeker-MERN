@@ -224,6 +224,12 @@ router.get('/candidate/jobPostings',async(req, res)=>{
     try{
       const jobPostings = await prisma.jobPosting.findMany({
         include:{
+        applications: userId 
+            ? {
+                where: { candidateId: userId },
+                select: { id: true }
+              }
+            : false,
          wishlistedBy: userRole === "CANDIDATE" && userId 
             ? {
                 where: { id: userId },
@@ -235,8 +241,10 @@ router.get('/candidate/jobPostings',async(req, res)=>{
 
       const formattedJobPostings = jobPostings.map((job)=>({
         ...job,
+        hasApplied: job.applications ? job.applications.length>0: false,
         isWishlisted:job.wishlistedBy ? job.wishlistedBy.length > 0 : false,
-        wishlistedBy:undefined
+        wishlistedBy:undefined,
+        applications:undefined
       }))
       return res.status(200).json({payload:formattedJobPostings, message:"Job Postings fetched successfully"})
     }catch(err){
@@ -456,5 +464,25 @@ router.get('/candidate/my-applications',async(req,res)=>{
     }
 })
 
+
+router.get('/employer/applications/:jobId',async(req,res)=>{
+  const {jobId} = req.params
+
+  try{
+    const applications =await prisma.application.findMany({
+      where:{jobId:jobId}
+    })
+    
+    return res.status(200).json({payload:applications})
+  }catch(err){
+         if (err instanceof PrismaClientKnownRequestError) {
+      if(err.code==='P2025'){
+                return res.status(401).json({error:'User not found'})
+        }
+    }
+
+    return res.status(500).json({ error: "Unexpected error occurred" });
+    }
+})
 
 export default router;
