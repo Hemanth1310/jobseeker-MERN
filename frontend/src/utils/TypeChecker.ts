@@ -74,7 +74,8 @@ export const jobPostSchema = jobPostingSchema.extend({
 });
 
 export const candidateJobPostSchema = jobPostSchema.extend({
-   isWishlisted:z.boolean()
+   isWishlisted:z.boolean(),
+   hasApplied: z.boolean()
 });
 
 export const arrayCandidateJobPostingSchema = z.array(candidateJobPostSchema)
