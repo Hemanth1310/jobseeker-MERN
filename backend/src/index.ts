@@ -5,6 +5,7 @@ import ProtectedRoutes from './protectedRoutes.js'
 import cors from 'cors'
 import authenticationToken from "./utils/authMiddleware.js";
 import cookieParser from "cookie-parser";
+import path from "node:path";
 const app = express()
 
 app.use((req, res, next) => {
@@ -25,6 +26,13 @@ app.use(cookieParser())
 app.use("/uploads", express.static("uploads"));
 app.use('/api/auth',AuthRouter)
 app.use('/api/private',authenticationToken,ProtectedRoutes)
+
+app.get('/uploads/:filename',async(req,res)=>{
+
+  const absolutePath = path.join(__dirname,"..","uploads",req.params.filename)
+  
+  return res.sendFile(absolutePath)
+})
 
 app.listen(3003,()=>{
     console.log("listening at 3003")
