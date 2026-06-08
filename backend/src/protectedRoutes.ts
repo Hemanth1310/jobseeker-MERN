@@ -470,7 +470,10 @@ router.get('/employer/applications/:jobId',async(req,res)=>{
 
   try{
     const applications =await prisma.application.findMany({
-      where:{jobId:jobId}
+      where:{jobId:jobId},
+      include:{
+        job:true
+      }
     })
     
     return res.status(200).json({payload:applications})
