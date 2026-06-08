@@ -96,15 +96,17 @@ const EmployerDashboard = () => {
                 <Edit size={28} onClick={()=>handleNavigation(post.id)}/>
             </div>
         </div>
-            <div className='flex items-center '>
-              <div className='w-full flex items-center gap-1'>
-                  <label >Role:</label>
+        <div className="flex items-center mt-5">
+              <div className="w-full flex items-center gap-1">
+                <label >Role:</label>
                   <select name='role' className='border-2 rounded-lg border-mist-200 text-lg p-1 pl-3' value={post.isActive+''} onChange={(e)=>handleStatus(e,post.id)}>
                       <option value="true">Active</option>
                       <option value="false">Closed</option>
                   </select>
               </div>
+                
             </div>
+          
           </JobCard>))}
           
           
