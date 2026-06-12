@@ -5,6 +5,7 @@ import { applicationSchema, jobPostingSchema } from "./utils/typechecker.js";
 import { PrismaClientKnownRequestError } from "../generated/prisma/internal/prismaNamespace.js";
 import { isDate } from "node:util/types";
 import upload from "./utils/multer.js";
+import type { Status } from "../generated/prisma/enums.js";
 
 const router = express.Router();
 
@@ -484,6 +485,29 @@ router.get('/employer/applications/:jobId',async(req,res)=>{
         }
     }
 
+    return res.status(500).json({ error: "Unexpected error occurred" });
+    }
+})
+
+router.patch('/employer/updateStatus/:applicationId/:status',async(req,res)=>{
+  const {applicationId,status} = req.params  
+  try{
+      await prisma.application.update({
+        where:{
+          id:applicationId
+        },
+        data:{
+          status:status as Status
+        }
+      })
+
+      return res.status(200).json({message:"Status updated Successfully."})
+    }catch(err){
+       if (err instanceof PrismaClientKnownRequestError) {
+          if (err.code === "P2002") {
+            return res.status(403).json({ error: "Record already exists." });
+          }
+        }
     return res.status(500).json({ error: "Unexpected error occurred" });
     }
 })
