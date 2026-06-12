@@ -27,7 +27,7 @@ const Modal = ({isOpen,title,children,onClose}: Props) => {
             {/* Divider stays fixed */}
             <div className='h-0.5 w-full bg-gray-200 shrink-0'></div>
             
-            <div className='flex-1 overflow-y-auto mt-4 pr-1 text-gray-700'>
+            <div className='flex-1 overflow-y-auto mt-4 pr-1 text-gray-700 w-full'>
                 {children}
             </div>
 
