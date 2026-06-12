@@ -11,7 +11,13 @@ const JobApplications = () => {
     const {id} = useParams()
     const [isLoading, setIsLoading] = useState(false)
     const [hasError, setHasError] = useState(false)
+    const [hasStatusChanged, setHasStatusChanged] = useState(false)
     const [applications, setApplications] = useState<candidateApplications[]|null>(null)
+
+
+    const updateStatus = ()=>{
+        setHasStatusChanged(true)
+    }
 
     useEffect(()=>{
         const fetchApplicaitons=async()=>{
@@ -29,6 +35,7 @@ const JobApplications = () => {
                 setHasError(true)
             }finally{
                 setIsLoading(false)
+                
             }
         }
         fetchApplicaitons()
@@ -77,13 +84,14 @@ const JobApplications = () => {
                 <th scope="col" className="px-6 py-4">Valid Work permit</th>
                 <th scope="col" className="px-6 py-4 text-right">Resume</th>
                 <th scope="col" className="px-6 py-4 text-right">CoverLetter</th>
+                <th scope="col" className="px-6 py-4 text-right">Status</th>
               </tr>
             </thead>
 
             <tbody className="divide-y divide-gray-100 font-medium text-gray-700">
               {applications.map((application) => (
                 /* ✅ Render the sub-component here */
-                <EmployerApplicationListRow key={application.id} application={application} />
+                <EmployerApplicationListRow key={application.id} application={application} hasStatusChanged={hasStatusChanged} updateStatus={updateStatus}/>
               ))}
             </tbody>
           </table>
