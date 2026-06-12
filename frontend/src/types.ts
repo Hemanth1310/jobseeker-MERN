@@ -20,7 +20,7 @@ export interface JobFormErrors extends JobFormState{
     apiResponse:string;
 }
 
-export type Status = "PENDING" | "REVIEWING" | "ACCEPTED" | " REJECTED"
+export type Status = "PENDING" | "REVIEWING" | "ACCEPTED" | "REJECTED"
 
 export type candidateApplications = {
     job: {
