@@ -2,13 +2,22 @@ import React, { useState } from 'react'
 import type { candidateApplications } from '../../types';
 import CoverLetterLayout from './CoverLetterLayout';
 import ResumeLayout from './ResumeLayout';
+import { Pencil } from 'lucide-react';
+import EditStatusLayout from './EditStatusLayout';
 
 
-const EmployerApplicationListRow = ({ application }:{application:candidateApplications}) => {
+const EmployerApplicationListRow = ({ application, updateStatus }:{application:candidateApplications, hasStatusChanged:boolean, updateStatus:()=>void}) => {
   const [showResume, setShowResume] = useState(false);
   const startDate = new Date(application.EarliestStartDate)
   const [showCoverLetter, setShowCoverLetter] = useState(false);
-
+  const [showEditStatus, setShowEditStatus] = useState(false)
+    const statusColor={
+  "PENDING":"gray",
+  "REVIEWING": "amber",
+  "ACCEPTED":"green",
+  "REJECTED":"red"
+}
+    console.log(`font-bold text-${statusColor["REVIEWING"]}-500 `)
   return (
     <tr className="hover:bg-gray-50/70 transition-colors duration-150 align-top">
       {/* Application ID */}
@@ -32,7 +41,7 @@ const EmployerApplicationListRow = ({ application }:{application:candidateApplic
         </span>
       </td>
       {/* Work permit */}
-      <td className="px-6 py-4 text-sm max-w-xs text-right">
+      <td className="px-6 py-4 text-sm max-w-xs text-right ">
         <button className='font-bold' onClick={()=>setShowResume(true)}>Show</button>
       </td>
 
@@ -40,9 +49,16 @@ const EmployerApplicationListRow = ({ application }:{application:candidateApplic
       <td className="px-6 py-4 text-sm max-w-xs text-right">
         <button className='font-bold' onClick={()=>setShowCoverLetter(true)}>Show</button>
       </td>
+       <td className="px-6 py-4 text-sm max-w-xs text-right">
+        <span onClick={()=>setShowEditStatus(true)} className={`font-bold cursor-pointer text-${statusColor[application.status]}-500 flex items-center justify-end gap-1`}>
+          {application.status}
+          <Pencil size={16} />
+        </span>
+      </td>
 
-      <CoverLetterLayout isOpen={showCoverLetter} onClose={()=>setShowCoverLetter(false)} coverLetter={application.coverLetter}/ >
+        <CoverLetterLayout isOpen={showCoverLetter} onClose={()=>setShowCoverLetter(false)} coverLetter={application.coverLetter}/ >
         <ResumeLayout isOpen={showResume} onClose={()=>setShowResume(false)} resumePath={application.resumePath}/>
+        <EditStatusLayout isOpen={showEditStatus} onClose={()=>setShowEditStatus(false)} updateStatus={updateStatus} status={application.status} appId={application.id}/>   
     </tr>
   );
 };
