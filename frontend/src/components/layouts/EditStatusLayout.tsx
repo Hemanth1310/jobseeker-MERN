@@ -26,7 +26,7 @@ const EditStatusLayout = ({isOpen, onClose, updateStatus, status, appId}: Props)
     const submitStatus =async ()=>{
          if(status!==curStatus){  
             try{
-                await axios.patch(`${BASE_API_URL}/api/private/employer/updateStatus/${appId}/${curStatus}`, feedback)
+                await axios.patch(`${BASE_API_URL}/api/private/employer/updateStatus/${appId}/${curStatus}`, {feedback})
                 
                  toast.success('Status Updated Successful',{
                                                                    position: "top-right",
