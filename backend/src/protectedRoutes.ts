@@ -499,7 +499,6 @@ router.get('/employer/applications/:jobId',async(req,res)=>{
 router.patch('/employer/updateStatus/:applicationId/:status',async(req,res)=>{
   const {applicationId,status} = req.params  
   const {feedback} = req.body
-  console.log(feedback)
   try{
       await prisma.application.update({
         where:{
