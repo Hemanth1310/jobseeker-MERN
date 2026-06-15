@@ -275,6 +275,12 @@ router.get("/candidate/jobPosting/:id",async(req,res)=>{
         const jobPosting = await prisma.jobPosting.findUnique({
             where: {id:id},
             include:{
+              applications: userId 
+            ? {
+                where: { candidateId: userId },
+                select: { id: true }
+              }
+            : false,
               wishlistedBy: userRole === "CANDIDATE" && userId 
                   ? {
                       where: { id: userId },
@@ -286,6 +292,7 @@ router.get("/candidate/jobPosting/:id",async(req,res)=>{
 
           const formattedJobPosting = {
         ...jobPosting,
+        hasApplied: jobPosting?.applications ? jobPosting.applications.length>0: false,
         isWishlisted:jobPosting?.wishlistedBy ? jobPosting.wishlistedBy.length > 0 : false,
         wishlistedBy:undefined
       }

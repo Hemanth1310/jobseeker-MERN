@@ -13,6 +13,7 @@ import MakeAPost from './views/EmployerPages/MakeAPost'
 import UpdateAPost from './views/EmployerPages/UpdateAPost'
 import CandidateAppplications from './views/CandidatePages/CandidateAppplications'
 import JobApplications from './views/EmployerPages/JobApplications'
+import JobApplication from './views/CandidatePages/JobApplication'
 
 function App() {
 
@@ -32,7 +33,7 @@ function App() {
               </Route>
                <Route element={<CandidateProtectedRoutes/>}>
                   <Route path='/dashboard' element={<CandidateDashboard/>}/>
-                  <Route path='/candidate/job/:id' element={<JobApplications/>}/>
+                  <Route path='/candidate/job/:id' element={<JobApplication/>}/>
                   <Route path='/MyApplications' element={<CandidateAppplications/>}/>
               </Route>
              
