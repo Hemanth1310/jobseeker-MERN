@@ -6,7 +6,7 @@ import { Pencil } from 'lucide-react';
 import EditStatusLayout from './EditStatusLayout';
 
 
-const EmployerApplicationListRow = ({ application, updateStatus }:{application:candidateApplications, hasStatusChanged:boolean, updateStatus:()=>void}) => {
+const EmployerApplicationListRow = ({ application, updateStatus }:{application:candidateApplications, updateStatus:()=>void}) => {
   const [showResume, setShowResume] = useState(false);
   const startDate = new Date(application.EarliestStartDate)
   const [showCoverLetter, setShowCoverLetter] = useState(false);

@@ -11,12 +11,12 @@ const JobApplications = () => {
     const {id} = useParams()
     const [isLoading, setIsLoading] = useState(false)
     const [hasError, setHasError] = useState(false)
-    const [hasStatusChanged, setHasStatusChanged] = useState(false)
+    const [refreshCount, setRefreshCount] = useState(0)
     const [applications, setApplications] = useState<candidateApplications[]|null>(null)
 
 
     const updateStatus = ()=>{
-        setHasStatusChanged(true)
+        setRefreshCount(prev => prev + 1)
     }
 
     useEffect(()=>{
@@ -35,11 +35,10 @@ const JobApplications = () => {
                 setHasError(true)
             }finally{
                 setIsLoading(false)
-                
             }
         }
         fetchApplicaitons()
-    },[id])
+    },[id, refreshCount])
     if(isLoading){
             return <Loading/>
         }
@@ -91,7 +90,7 @@ const JobApplications = () => {
             <tbody className="divide-y divide-gray-100 font-medium text-gray-700">
               {applications.map((application) => (
                 /* ✅ Render the sub-component here */
-                <EmployerApplicationListRow key={application.id} application={application} hasStatusChanged={hasStatusChanged} updateStatus={updateStatus}/>
+                <EmployerApplicationListRow key={application.id} application={application} updateStatus={updateStatus}/>
               ))}
             </tbody>
           </table>
