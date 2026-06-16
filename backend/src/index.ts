@@ -38,7 +38,8 @@ app.get('/uploads/:filename',async(req,res)=>{
   return res.sendFile(absolutePath)
 })
 
-app.listen(3003,()=>{
-    console.log("listening at 3003")
+const PORT = process.env.PORT || 3003
+app.listen(PORT,()=>{
+    console.log(`listening at ${PORT}`)
 })
 
