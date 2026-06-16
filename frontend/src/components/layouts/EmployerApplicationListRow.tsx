@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import type { candidateApplications } from '../../types';
 import CoverLetterLayout from './CoverLetterLayout';
 import ResumeLayout from './ResumeLayout';

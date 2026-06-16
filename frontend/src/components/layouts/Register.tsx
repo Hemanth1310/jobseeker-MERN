@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import type { toggeler } from '../../types'
 import { registerSchema } from '../../utils/TypeChecker'
 import { AxiosError } from 'axios'

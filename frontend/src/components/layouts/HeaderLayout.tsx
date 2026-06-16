@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Logo from '../ui/Logo'
 import { useAuthContextData } from '../../utils/useAuthContextData'
 import AuthLayout from './AuthLayout'

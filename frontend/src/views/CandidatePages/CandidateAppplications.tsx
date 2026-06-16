@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { candidateApplications } from '../../types'
 import axios from "../../utils/authMiddleware";
 import { AxiosError } from 'axios';

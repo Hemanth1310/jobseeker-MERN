@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
 import type { candidateApplications } from '../../types'
 import Loading from '../../components/layouts/Loading'

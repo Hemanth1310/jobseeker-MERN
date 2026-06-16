@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import type { candidateApplications } from '../../types';
 
 // Isolated sub-component for the table row to hold individual toggle states

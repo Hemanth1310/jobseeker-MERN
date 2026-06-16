@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import axios from '../../utils/authMiddleware'
 import { arrayjobPostingSchema, type JobPostType } from '../../utils/TypeChecker'
 import { AxiosError } from 'axios'

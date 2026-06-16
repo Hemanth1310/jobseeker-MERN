@@ -1,5 +1,5 @@
 import { Bookmark, BookmarkCheck, Loader } from 'lucide-react'
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 type Props = {
 isWishlisted:boolean,

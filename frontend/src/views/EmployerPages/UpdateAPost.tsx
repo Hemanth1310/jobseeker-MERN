@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { jobPostingSchema } from '../../utils/TypeChecker'
 import axios from '../../utils/authMiddleware'
 import { toast } from 'react-toastify'

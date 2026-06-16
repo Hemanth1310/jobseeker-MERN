@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import Modal from './Modal'
 import axios from '../../utils/authMiddleware'
 import { toast } from 'react-toastify'
