@@ -77,18 +77,19 @@ router.post('/login',async(req,res)=>{
             return res.status(500).json({error:'Unexpected error occurred'})
         }
 
+        const isProduction = process.env.NODE_ENV === 'production'
         res.cookie('token',token,{
-            httpOnly: true,    
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'strict', 
-            maxAge: 24 * 60 * 60 * 1000, 
+            httpOnly: true,
+            secure: isProduction,
+            sameSite: isProduction ? 'none' : 'strict',
+            maxAge: 24 * 60 * 60 * 1000,
         })
 
         res.cookie('hasAuth','1',{
-            httpOnly: false,    
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'strict', 
-            maxAge: 24 * 60 * 60 * 1000, 
+            httpOnly: false,
+            secure: isProduction,
+            sameSite: isProduction ? 'none' : 'strict',
+            maxAge: 24 * 60 * 60 * 1000,
         })
 
         return res.status(200).json({
